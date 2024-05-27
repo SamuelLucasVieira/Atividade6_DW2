@@ -12,7 +12,7 @@ routes.post("/login", userController.login);
 routes.use("/usuario", user);
 routes.use("/categoria", validadeAcess, category);
 routes.use("/produto", validadeAcess, product);
-routes.use("/gasto",checkAdm, spent);
+routes.use("/gasto",validadeAcess, spent);
 
 
 //aceita qualquer método HTTP ou URL
