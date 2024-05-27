@@ -4,7 +4,7 @@ import product from "./product";
 import userController from "../controllers/UserController";
 import spent from "./spent";
 import category from "./category";
-import { checkAdm, validadeAcess } from "../middlewares";
+import { validadeAcess } from "../middlewares";
 
 const routes = Router();
 

@@ -13,35 +13,17 @@ class SpentController {
   }
 
   public async staticByProduct(req: Request, res: Response): Promise<void> {
-    
-    const result: any = await query(`
-            SELECT 
-                b.name AS name, 
-                MAX(a.value) AS max,
-                MIN(a.value) AS min,
-                COUNT(b.name) AS count,
-                AVG(CAST(a.value AS FLOAT)) AS avg
-            FROM 
-                spents AS a 
-            LEFT JOIN 
-                products AS b
-            ON 
-                a.idproduct = b.id
-            GROUP BY 
-                b.name
-        `);
-
-        if (result.length > 0) {
-            const max = parseFloat(result[0].max);      
-            res.json({
-                resposta: result,
-                max: max
-            });
-        } else {
-            res.json({
-                error: "Nenhum resultado encontrado"
-            });
-        }
+    const b: any = await query(
+      `SELECT b.name AS name, Max(a.value::float) as maxi,MIN(a.value::float) AS min,CAST(COUNT(b.name) AS INT) AS count, TRUNC(AVG(a.value::float), 2) AS avg
+      FROM spents AS a LEFT JOIN products AS b
+      ON a.idproduct = b.id
+      group by b.name
+      ORDER BY b.name ASC
+       `
+    );  
+    res.json({ spends:b
+    });
+    console.log(b)
   }
 
   public async list(req: Request, res: Response): Promise<void> {
