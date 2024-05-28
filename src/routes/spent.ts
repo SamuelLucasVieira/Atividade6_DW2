@@ -4,8 +4,9 @@ import { checkAdm } from "../middlewares";
 
 const routes = Router();
 routes.get("/listar", controller.list);
-routes.get("/produtos",checkAdm,controller.staticByProduct);
 routes.get("/listar/:page", controller.list);
+routes.get("/produtos",checkAdm,controller.statcByProduct);
+routes.get("/usuarios",checkAdm,controller.statsByUser);
 routes.post("/", controller.create);
 routes.delete("/", controller.delete);
 routes.put("/", controller.update);

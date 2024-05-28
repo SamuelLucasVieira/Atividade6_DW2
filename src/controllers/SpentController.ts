@@ -12,18 +12,30 @@ class SpentController {
     res.json(r);
   }
 
-  public async staticByProduct(req: Request, res: Response): Promise<void> {
-    const b: any = await query(
-      `SELECT b.name AS name, Max(a.value::float) as maxi,MIN(a.value::float) AS min,CAST(COUNT(b.name) AS INT) AS count, TRUNC(AVG(a.value::float), 2) AS avg
+  public async statcByProduct(req: Request, res: Response): Promise<void> {
+    const r:any = await query(
+      `SELECT b.name AS name,ROUND(AVG(a.value),2)::FLOAT AS avg,CAST(COUNT(b.name) AS INT) AS count, Max(a.value::float) as max,MIN(a.value::float) AS min
       FROM spents AS a LEFT JOIN products AS b
       ON a.idproduct = b.id
       group by b.name
       ORDER BY b.name ASC
        `
     );  
-    res.json({ spends:b
-    });
-    console.log(b)
+    res.json(r);
+    console.log(r)
+  }
+
+  public async  statsByUser(req: Request, res: Response): Promise<void> {
+    const r:any = await query(
+      `SELECT a.mail, ROUND(sum(b.value),2)::FLOAT AS sum,ROUND(count(b.value::float),0)::FLOAT as count
+       FROM users AS a 
+       LEFT JOIN spents AS B ON a.id = b.iduser 
+       group by a.mail 
+       order by a.mail asc
+      `
+    )
+    res.json(r);
+    console.log(r)
   }
 
   public async list(req: Request, res: Response): Promise<void> {
